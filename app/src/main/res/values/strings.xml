@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">gb_libraries</string>
+    <string name="default_value_textview">0</string>
+    <string name="button_text_1">Кнопка 1</string>
+    <string name="button_text_2">Кнопка 2</string>
+    <string name="button_text_3">Кнопка 3</string>
 </resources>
