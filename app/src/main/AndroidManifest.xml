@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.example.gb_libraries">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <application
+            android:name=".App"
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"
             android:fullBackupContent="@xml/backup_rules"
@@ -14,7 +14,7 @@
             android:theme="@style/Theme.Gb_libraries"
             tools:targetApi="31">
         <activity
-                android:name=".MainActivity"
+                android:name="com.example.gb_libraries.ui.main.MainActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
