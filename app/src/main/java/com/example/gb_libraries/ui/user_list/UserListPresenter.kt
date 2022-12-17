@@ -33,7 +33,7 @@ class UserListPresenter(
         usersListPresenter.itemClickListener = { userItemView ->
             userItemView.position?.let {
                 router.navigateTo(
-                    Screens.openUserDetailsFragment(
+                    Screens.userDetails(
                         loadUser(it).login
                     )
                 )
