@@ -4,11 +4,14 @@ import com.example.gb_libraries.core.nav.Screens
 import com.example.gb_libraries.model.GithubUser
 import com.example.gb_libraries.repository.impl.GithubRepositoryImpl
 import com.github.terrakok.cicerone.Router
+import io.reactivex.disposables.CompositeDisposable
 
 class UserListPresenter(
     private val usersRepo: GithubRepositoryImpl,
     private val router: Router,
 ) : UserListContract.Presenter() {
+
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     class UsersListAdapterPresenter : UserListAdapterPresenter {
         val users = mutableListOf<GithubUser>()
@@ -31,24 +34,36 @@ class UserListPresenter(
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { userItemView ->
-            userItemView.position?.let {
-                router.navigateTo(
-                    Screens.userDetails(
-                        loadUser(it).login
-                    )
+            userItemView.position?.let { index ->
+                compositeDisposable.add(
+                    usersRepo.users
+                        .map { it[index] }
+                        .subscribe(
+                            { user ->
+                                router.navigateTo(Screens.userDetails(user.login))
+                            },
+                            { thr ->
+                                thr.message?.let { viewState.showError(it) }
+                            }
+                        )
                 )
             }
         }
     }
 
     override fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
-        viewState.updateList()
-    }
-
-    override fun loadUser(position: Int): GithubUser {
-        return usersRepo.getUsers()[position]
+        compositeDisposable.add(
+            usersRepo.users
+                .subscribe(
+                    { userList ->
+                        usersListPresenter.users.addAll(userList)
+                        viewState.updateList()
+                    },
+                    { thr ->
+                        thr.message?.let { viewState.showError(it) }
+                    }
+                )
+        )
     }
 
     override fun backPressed(): Boolean {
