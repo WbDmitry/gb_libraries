@@ -9,7 +9,7 @@ class MainPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        router.replaceScreen(Screens.openUserListFragment())
+        router.replaceScreen(Screens.userList())
     }
 
     override fun onBackPressed() {
